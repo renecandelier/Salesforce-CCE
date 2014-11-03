@@ -1,0 +1,222 @@
+/*
+ Copyright (c) 2011, salesforce.com, inc. All rights reserved.
+ 
+ Redistribution and use of this software in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions
+ and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of
+ conditions and the following disclaimer in the documentation and/or other materials provided
+ with the distribution.
+ * Neither the name of salesforce.com, inc. nor the names of its contributors may be used to
+ endorse or promote products derived from this software without specific prior written
+ permission of salesforce.com, inc.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+#import "RootViewController.h"
+
+#import "SFRestAPI.h"
+#import "SFRestRequest.h"
+#import "Details.h"
+
+@implementation RootViewController
+
+@synthesize dataRows;
+
+#pragma mark Misc
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Relinquish ownership any cached data, images, etc that aren't in use.
+}
+
+- (void)dealloc
+{
+    self.dataRows = nil;
+}
+
+
+#pragma mark - View lifecycle
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+//    UIImageView * logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"top"]];
+//    
+//    logo.frame = CGRectMake(0, 0, 320, 44);
+//    
+//    logo.center = self.navigationController.navigationBar.center;
+//    
+//    [self. navigationController.navigationBar addSubview:logo];
+//   
+
+    
+    //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top.png"]];
+    //UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top.png"]]];
+    //self.navigationItem.rightBarButtonItem = item;
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+
+    //self.title = @"Coca-Cola Enterprises";
+    
+    
+    //Setting the separators to color Black
+    [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
+    
+    //Here we use a query that should work on either Force.com or Database.com
+//    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name, Id, Quantity__c, Price__c FROM Location__c LIMIT 10"];
+//    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name FROM Location__c LIMIT 10"];
+        SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name, Bottler_Name__c, Address__c, Telephone__c, Id FROM Location__c LIMIT 50"];
+
+    [[SFRestAPI sharedInstance] send:request delegate:self];
+}
+
+#pragma mark - SFRestAPIDelegate
+
+- (void)request:(SFRestRequest *)request didLoadResponse:(id)jsonResponse {
+    NSArray *records = [jsonResponse objectForKey:@"records"];
+    NSLog(@"request:didLoadResponse: #records: %ld", records.count);
+    self.dataRows = records;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name, Bottler_Name__c, Address__c, Telephone__c, Id FROM Location__c LIMIT 50"];
+    
+    [[SFRestAPI sharedInstance] send:request delegate:self];
+      [self.navigationController setNavigationBarHidden:NO animated:animated]; [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"top2.png"] forBarMetrics:UIBarMetricsDefault];
+}
+
+- (void)request:(SFRestRequest*)request didFailLoadWithError:(NSError*)error {
+    //NSLog(@"request:didFailLoadWithError: %@", error);
+    //add your failed error handling here
+}
+
+- (void)requestDidCancelLoad:(SFRestRequest *)request {
+   // NSLog(@"requestDidCancelLoad: %@", request);
+    //add your failed error handling here
+}
+
+- (void)requestDidTimeout:(SFRestRequest *)request {
+    //NSLog(@"requestDidTimeout: %@", request);
+    //add your failed error handling here
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataRows count];
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+   static NSString *CellIdentifier = @"Cell";
+
+   // Dequeue or create a cell of the appropriate type.
+    UITableViewCell *cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+
+    }
+    
+    
+    
+    
+//	//if you want to add an image to your cell, here's how
+//	UIImage *image = [UIImage imageNamed:@"france@2x.png"];
+//	
+//    cell.imageView.frame = CGRectMake(
+//                                 cell.imageView.frame.origin.x,
+//                                 cell.imageView.frame.origin.y, 5, 5);
+//    
+//    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//
+//    
+////    cell.imageView.contentMode = UIViewContentModeBottom; // This determines position of image
+////    cell.imageView.clipsToBounds = YES;
+//    
+//    cell.imageView.image = image;
+    
+    
+
+    
+//    // Begin a new image that will be the new image with the rounded corners
+//    // (here with the size of an UIImageView)
+//    UIGraphicsBeginImageContextWithOptions(cell.imageView.bounds.size, NO, [UIScreen mainScreen].scale);
+//    
+//    // Add a clip before drawing anything, in the shape of an rounded rect
+//    [[UIBezierPath bezierPathWithRoundedRect:cell.imageView.bounds
+//                                cornerRadius:10.0] addClip];
+//    // Draw your image
+//    [image drawInRect:cell.imageView.bounds];
+//    
+//    // Get the image, here setting the UIImageView image
+//    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    
+//    // Lets forget about that we were drawing
+//    UIGraphicsEndImageContext();
+
+    
+    
+    
+	// Configure the cell to show the data.
+	NSDictionary *obj = [dataRows objectAtIndex:indexPath.row];
+    
+    NSLog(@"WAAAAAAAAAAA%@",obj);
+	cell.textLabel.text =  [obj objectForKey:@"Name"];
+    
+    [cell.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:30]];
+
+    cell.textLabel.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
+    
+    cell.detailTextLabel.text =[obj objectForKey:@"Telephone__c"];
+    
+    [cell.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:25]];
+    
+    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+
+    
+	//this adds the arrow to the right hand side.
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	return cell;
+
+}
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+    NSDictionary * obj = [self.dataRows objectAtIndex:indexPath.row];
+    
+    Details * detailView = [[Details alloc]initWithName:[obj objectForKey:@"Name"] bottler:[obj objectForKey:@"Bottler_Name__c"] address:[obj objectForKey:@"Address__c"] telephone:[obj objectForKey:@"Telephone__c"] ID:[obj objectForKey:@"Id"]];
+    
+    [self.navigationController pushViewController:detailView animated:YES];
+    
+}
+
+@end
