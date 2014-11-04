@@ -117,6 +117,9 @@
             [bottlerNameTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:20]];
 
             bottlerNameTextField.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
+            
+        
+            
             bottlerNameTextField.text =bottlerName;
             
             bottlerNameTextField.delegate = self;
@@ -186,7 +189,7 @@
 
 
         
-        updateButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-75, SCREEN_HEIGHT-100, 150, 50)];
+        updateButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-75, SCREEN_HEIGHT-180, 150, 50)];
         
         [theScrollView  addSubview:updateButton];
         
@@ -199,6 +202,7 @@
         updateButton.layer.cornerRadius = 10; // this value vary as per your desire
         updateButton.clipsToBounds = YES;
         
+        NSLog(@"NAME :%@     TEL: %@      ADD:%@",bottlerNameTextField.text, bottlerTelephoneTextField.text, bottlerAddressTextField.text);
 
         
     }
@@ -209,7 +213,11 @@
 
     statusofUpdate = [[UILabel alloc] initWithFrame:CGRectMake(200, 100, 100, 80)];
     
-    [self.view addSubview:statusofUpdate];
+    [theScrollView addSubview:statusofUpdate];
+    
+    
+    
+    NSLog(@"NAME :%@     TEL: %@      ADD:%@",bottlerNameTextField.text, bottlerTelephoneTextField.text, bottlerAddressTextField.text);
     
     NSDictionary * fields = [NSDictionary dictionaryWithObjectsAndKeys:bottlerNameTextField.text,@"Bottler_Name__c",
                              bottlerAddressTextField.text,@"Address__c",
@@ -257,16 +265,6 @@
 
 
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    bottlerNameTextField = textField;
-    
-    bottlerTelephoneTextField = textField;
-
-    bottlerAddressTextField = textField;
-
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     bottlerNameTextField = nil;
@@ -281,30 +279,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     
-//    NSArray *arrBarBtn = self.navigationItem.rightBarButtonItems;
-//    
-//    if([arrBarBtn count]>0)
-//    {
-//        for(UIBarButtonItem *barBtn in arrBarBtn)
-//        {
-//            //do as per your requirement.
-//            if([barBtn.title isEqualToString:@"Edit"])
-//            {
-//                barBtn.title = @"Done";
-//            }
-//        }
-//    }
-//    
-//    
-//    if([self.navigationItem.rightBarButtonItem.title isEqualToString: @"Edit"]) {
-//        //Do your stuff;
-//        self.navigationItem.rightBarButtonItem.title = @"Done";
-//    }
-//    else if([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Done"]){
-//        //Do your stuff;
-//        self.navigationItem.rightBarButtonItem.title = @"Edit";
-//    }
-    
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -313,7 +288,6 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated]; [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@""] forBarMetrics:UIBarMetricsDefault];
 
     self.navigationController.navigationBar.barTintColor =[UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
-    //[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
@@ -325,17 +299,21 @@
     numberToolbar.items = [NSArray arrayWithObjects:
                            [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelNumberPad)],
                            [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-                           [[UIBarButtonItem alloc]initWithTitle:@"Update" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           [[UIBarButtonItem alloc]initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
                            nil];
     [numberToolbar sizeToFit];
     bottlerTelephoneTextField.inputAccessoryView = numberToolbar;
     bottlerNameTextField.inputAccessoryView = numberToolbar;
     bottlerAddressTextField.inputAccessoryView = numberToolbar;
+    NSLog(@"NAME :%@     TEL: %@      ADD:%@",bottlerNameTextField.text, bottlerTelephoneTextField.text, bottlerAddressTextField.text);
 
 
 }
 
 -(void)cancelNumberPad{
+    NSLog(@"NAME :%@     TEL: %@      ADD:%@",bottlerNameTextField.text, bottlerTelephoneTextField.text, bottlerAddressTextField.text);
+    [self updateButton];
+
     [bottlerTelephoneTextField resignFirstResponder];
     [bottlerNameTextField resignFirstResponder];
     [bottlerAddressTextField resignFirstResponder];
@@ -343,16 +321,14 @@
 }
 
 -(void)doneWithNumberPad{
-   
     [self cancelNumberPad];
-    
     
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - keyboard movements
