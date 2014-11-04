@@ -13,7 +13,7 @@
 
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
-@interface Details ()
+@interface Details ()<UITextFieldDelegate, UITextViewDelegate,UIScrollViewDelegate>
 
 @end
 
@@ -32,6 +32,10 @@
     
     NSString * IDforBottler;
     
+    UIView * subView;
+    
+    UIScrollView * theScrollView;
+    
 }
 
 -(id)initWithName:(NSString *)countryName bottler:(NSString *)bottlerName address:(NSString *)bottlerAddress telephone:(NSString *)bottlerTelephone ID:(NSString *)bottlerID{
@@ -41,6 +45,56 @@
         
         
         
+        
+        
+        
+        theScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        
+        
+        UILabel * bottler = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 50, 300, 35)];
+        [theScrollView  addSubview:bottler];
+        
+        [bottler  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:28]];
+        bottler.textColor = [UIColor darkGrayColor];
+        [bottler setTextAlignment:UITextAlignmentCenter]; //to center text in the UILabel
+
+        bottler.text = @"Bottler";
+        
+        
+        
+        UILabel * bottleraddress = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 120, 300, 35)];
+        [theScrollView  addSubview:bottleraddress];
+        
+        [bottleraddress  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:28]];
+        bottleraddress.textColor = [UIColor darkGrayColor];
+        [bottleraddress setTextAlignment:UITextAlignmentCenter]; //to center text in the UILabel
+        
+        bottleraddress.text = @"Address";
+        
+        
+        UILabel * bottlerTel= [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 220, 300, 35)];
+        [theScrollView  addSubview:bottlerTel];
+        
+        [bottlerTel  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:28]];
+        bottlerTel.textColor = [UIColor darkGrayColor];
+        [bottlerTel setTextAlignment:UITextAlignmentCenter]; //to center text in the UILabel
+        bottlerTel.text = @"Telephone";
+        
+        
+        bottlerNameTextField.textColor = [UIColor darkGrayColor];
+        bottlerNameTextField.text =bottlerName;
+        
+        [self.view addSubview:theScrollView];
+//        [theScrollView addSubview:self.view];
+        
+        
+        theScrollView.showsVerticalScrollIndicator=NO;
+        theScrollView.scrollEnabled=YES;
+        theScrollView.userInteractionEnabled=YES;
+        theScrollView.contentSize = CGSizeMake(SCREEN_WIDTH,SCREEN_HEIGHT);
+        
+        
+        theScrollView.delegate = self;
         
         self.title = countryName;
         
@@ -56,14 +110,17 @@
         }else{
             //Text Field for Bottler Name
             
-            bottlerNameTextField = [[UITextField alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, SCREEN_HEIGHT-400, 300, 35)];
-            [self.view addSubview:bottlerNameTextField];
+            bottlerNameTextField = [[UITextField alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 80, 300, 35)];
+            [theScrollView  addSubview:bottlerNameTextField];
             
             bottlerNameTextField.textAlignment  = UITextAlignmentCenter;
-            [bottlerNameTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:30]];
+            [bottlerNameTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:20]];
 
-            bottlerNameTextField.textColor = [UIColor darkGrayColor];
+            bottlerNameTextField.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
             bottlerNameTextField.text =bottlerName;
+            
+            bottlerNameTextField.delegate = self;
+
 
         }
         
@@ -76,16 +133,26 @@
         }else{
             //Text Field for Bottler Address
             
-            bottlerAddressTextField = [[UITextView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, SCREEN_HEIGHT-330, 300, 160)];
-            [self.view addSubview:bottlerAddressTextField];
+            bottlerAddressTextField = [[UITextView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 150, 300, 70)];
+            [theScrollView  addSubview:bottlerAddressTextField];
             
             bottlerAddressTextField.textAlignment  = UITextAlignmentCenter;
             
-            [bottlerAddressTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:30]];
+            [bottlerAddressTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:20]];
 
-            bottlerAddressTextField.textColor = [UIColor darkGrayColor];
+            bottlerAddressTextField.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
 
             bottlerAddressTextField.text =bottlerAddress;
+            
+            bottlerAddressTextField.delegate = self;
+//            
+//            bottlerAddressTextField.layer.borderWidth = 1;
+//            bottlerAddressTextField.layer.borderColor = [[UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f] CGColor];
+//            
+//            bottlerAddressTextField.layer.cornerRadius = 3.0;
+            
+
+
 
         }
         
@@ -99,19 +166,20 @@
             
             //Text Field for Bottler Telephone
             
-            bottlerTelephoneTextField = [[UITextField alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, SCREEN_HEIGHT-160, 300, 35)];
-            [self.view addSubview:bottlerTelephoneTextField];
+            bottlerTelephoneTextField = [[UITextField alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-150, 250, 300, 35)];
+            [theScrollView addSubview:bottlerTelephoneTextField];
             
             bottlerTelephoneTextField.textAlignment  = UITextAlignmentCenter;
 
             
-            [bottlerTelephoneTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:30]];
+            [bottlerTelephoneTextField  setFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:20]];
 
             
             bottlerTelephoneTextField.text =bottlerTelephone;
-            bottlerTelephoneTextField.textColor = [UIColor darkGrayColor];
+            bottlerTelephoneTextField.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
 
-            
+            bottlerTelephoneTextField.delegate = self;
+
         }
         
         
@@ -120,7 +188,7 @@
         
         updateButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-75, SCREEN_HEIGHT-100, 150, 50)];
         
-        [self.view addSubview:updateButton];
+        [theScrollView  addSubview:updateButton];
         
         updateButton.backgroundColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
         
@@ -130,6 +198,8 @@
 
         updateButton.layer.cornerRadius = 10; // this value vary as per your desire
         updateButton.clipsToBounds = YES;
+        
+
         
     }
     return self;
@@ -155,13 +225,92 @@
  
     NSLog(@"1 Record Updated");
     
-    statusofUpdate.text = @"1 Record Updated";
+//    statusofUpdate.text = @"1 Record Updated";
+//    
+//    statusofUpdate.textColor = [UIColor redColor];
     
-    statusofUpdate.textColor = [UIColor redColor];
-    
-   // [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)viewWillAppear:(BOOL)animated { [self.navigationController setNavigationBarHidden:NO animated:animated]; [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@""] forBarMetrics:UIBarMetricsDefault];
+
+
+- (void)keyboardWasShown:(NSNotification *)notification
+{
+    
+    // Step 1: Get the size of the keyboard.
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    
+    // Step 2: Adjust the bottom content inset of your scroll view by the keyboard height.
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
+    theScrollView.contentInset = contentInsets;
+    theScrollView.scrollIndicatorInsets = contentInsets;
+    
+    
+    // Step 3: Scroll the target text field into view.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= keyboardSize.height;
+    if (!CGRectContainsPoint(aRect, bottlerNameTextField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, bottlerNameTextField.frame.origin.y - (keyboardSize.height-15));
+        [theScrollView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    bottlerNameTextField = textField;
+    
+    bottlerTelephoneTextField = textField;
+
+    bottlerAddressTextField = textField;
+
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    bottlerNameTextField = nil;
+    
+    bottlerAddressTextField = nil;
+    
+    bottlerTelephoneTextField = nil;
+
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    
+//    NSArray *arrBarBtn = self.navigationItem.rightBarButtonItems;
+//    
+//    if([arrBarBtn count]>0)
+//    {
+//        for(UIBarButtonItem *barBtn in arrBarBtn)
+//        {
+//            //do as per your requirement.
+//            if([barBtn.title isEqualToString:@"Edit"])
+//            {
+//                barBtn.title = @"Done";
+//            }
+//        }
+//    }
+//    
+//    
+//    if([self.navigationItem.rightBarButtonItem.title isEqualToString: @"Edit"]) {
+//        //Do your stuff;
+//        self.navigationItem.rightBarButtonItem.title = @"Done";
+//    }
+//    else if([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Done"]){
+//        //Do your stuff;
+//        self.navigationItem.rightBarButtonItem.title = @"Edit";
+//    }
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated]; [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@""] forBarMetrics:UIBarMetricsDefault];
 
     self.navigationController.navigationBar.barTintColor =[UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
     //[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
@@ -171,8 +320,59 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     
     
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleDefault;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelNumberPad)],
+                           [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                           [[UIBarButtonItem alloc]initWithTitle:@"Update" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           nil];
+    [numberToolbar sizeToFit];
+    bottlerTelephoneTextField.inputAccessoryView = numberToolbar;
+    bottlerNameTextField.inputAccessoryView = numberToolbar;
+    bottlerAddressTextField.inputAccessoryView = numberToolbar;
+
 
 }
 
+-(void)cancelNumberPad{
+    [bottlerTelephoneTextField resignFirstResponder];
+    [bottlerNameTextField resignFirstResponder];
+    [bottlerAddressTextField resignFirstResponder];
+
+}
+
+-(void)doneWithNumberPad{
+   
+    [self cancelNumberPad];
+    
+    
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+#pragma mark - keyboard movements
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = -35.0f;  //set the -35.0f to your required value
+        self.view.frame = f;
+    }];
+}
+
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = 0.0f;
+        self.view.frame = f;
+    }];
+    
+}
 
 @end
