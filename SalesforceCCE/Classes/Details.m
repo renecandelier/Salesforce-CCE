@@ -43,11 +43,6 @@
     
     if (self) {
         
-        
-        
-        
-        
-        
         theScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
         
         
@@ -85,8 +80,6 @@
         bottlerNameTextField.text =bottlerName;
         
         [self.view addSubview:theScrollView];
-//        [theScrollView addSubview:self.view];
-        
         
         theScrollView.showsVerticalScrollIndicator=NO;
         theScrollView.scrollEnabled=YES;
@@ -118,15 +111,11 @@
 
             bottlerNameTextField.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
             
-        
-            
             bottlerNameTextField.text =bottlerName;
             
             bottlerNameTextField.delegate = self;
 
-
         }
-        
         
         
         if ([bottlerAddress isEqualToString:nil]) {
@@ -148,14 +137,6 @@
             bottlerAddressTextField.text =bottlerAddress;
             
             bottlerAddressTextField.delegate = self;
-//            
-//            bottlerAddressTextField.layer.borderWidth = 1;
-//            bottlerAddressTextField.layer.borderColor = [[UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f] CGColor];
-//            
-//            bottlerAddressTextField.layer.cornerRadius = 3.0;
-            
-
-
 
         }
         
@@ -184,10 +165,6 @@
             bottlerTelephoneTextField.delegate = self;
 
         }
-        
-        
-
-
         
         updateButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-75, SCREEN_HEIGHT-180, 150, 50)];
         
@@ -325,11 +302,6 @@
     
 }
 
-
-- (void)viewWillDisappear:(BOOL)animated {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
 
 #pragma mark - keyboard movements
 - (void)keyboardWillShow:(NSNotification *)notification

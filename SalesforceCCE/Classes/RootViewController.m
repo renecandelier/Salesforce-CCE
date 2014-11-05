@@ -55,31 +55,11 @@
     [super viewDidLoad];
     
     
-//    UIImageView * logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"top"]];
-//    
-//    logo.frame = CGRectMake(0, 0, 320, 44);
-//    
-//    logo.center = self.navigationController.navigationBar.center;
-//    
-//    [self. navigationController.navigationBar addSubview:logo];
-//   
-
-    
-    //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top.png"]];
-    //UIBarButtonItem * item = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top.png"]]];
-    //self.navigationItem.rightBarButtonItem = item;
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-
-    //self.title = @"Coca-Cola Enterprises";
-    
+    self.view.backgroundColor = [UIColor whiteColor];    
     
     //Setting the separators to color Black
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     
-    //Here we use a query that should work on either Force.com or Database.com
-//    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name, Id, Quantity__c, Price__c FROM Location__c LIMIT 10"];
-//    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name FROM Location__c LIMIT 10"];
         SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Name, Bottler_Name__c, Address__c, Telephone__c, Id FROM Location__c LIMIT 50"];
 
     [[SFRestAPI sharedInstance] send:request delegate:self];
@@ -142,46 +122,7 @@
 
     }
     
-    
-    
-    
-//	//if you want to add an image to your cell, here's how
-//	UIImage *image = [UIImage imageNamed:@"france@2x.png"];
-//	
-//    cell.imageView.frame = CGRectMake(
-//                                 cell.imageView.frame.origin.x,
-//                                 cell.imageView.frame.origin.y, 5, 5);
-//    
-//    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//
-//    
-////    cell.imageView.contentMode = UIViewContentModeBottom; // This determines position of image
-////    cell.imageView.clipsToBounds = YES;
-//    
-//    cell.imageView.image = image;
-    
-    
 
-    
-//    // Begin a new image that will be the new image with the rounded corners
-//    // (here with the size of an UIImageView)
-//    UIGraphicsBeginImageContextWithOptions(cell.imageView.bounds.size, NO, [UIScreen mainScreen].scale);
-//    
-//    // Add a clip before drawing anything, in the shape of an rounded rect
-//    [[UIBezierPath bezierPathWithRoundedRect:cell.imageView.bounds
-//                                cornerRadius:10.0] addClip];
-//    // Draw your image
-//    [image drawInRect:cell.imageView.bounds];
-//    
-//    // Get the image, here setting the UIImageView image
-//    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//    
-//    // Lets forget about that we were drawing
-//    UIGraphicsEndImageContext();
-
-    
-    
-    
 	// Configure the cell to show the data.
 	NSDictionary *obj = [dataRows objectAtIndex:indexPath.row];
     
@@ -192,7 +133,7 @@
 
     cell.textLabel.textColor = [UIColor colorWithRed:0.855f green:0.024f blue:0.035f alpha:1.0f];
     
-    cell.detailTextLabel.text =[obj objectForKey:@"Telephone__c"];
+    cell.detailTextLabel.text =[NSString stringWithFormat:@"Tel: %@",[obj objectForKey:@"Telephone__c"]];
     
     [cell.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:25]];
     
